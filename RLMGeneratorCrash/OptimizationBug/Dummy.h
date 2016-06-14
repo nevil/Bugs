@@ -8,6 +8,6 @@
 #ifndef Dummy_h
 #define Dummy_h
 
-void dummy(void);
+void WeNeedSomeCToMakeAsanLinkingHappy(void);
 
 #endif /* Dummy_h */

@@ -25,9 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        dummy()
+        WeNeedSomeCToMakeAsanLinkingHappy()
 
         let h = Helper()
+        print(h.allItems)
 
         return true
     }

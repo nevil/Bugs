@@ -7,78 +7,33 @@
 
 
 class TitleInfoRLM: RLMObject {
-    dynamic var titleCode: String
-    dynamic var titleName: String
-    dynamic var episodes = RLMArray(objectClassName: EpisodeInfoRLM.className())
+    dynamic var name: String
 
-    init(titleCode: String, titleName: String, updateDate: NSDate = NSDate(timeIntervalSince1970: 0)) {
-        self.titleCode = titleCode
-        self.titleName = titleName
+    init(name: String) {
+        self.name = name
         super.init()
     }
 
     @available(*, unavailable, message="This init is only used by Realm for temporary objects")
     private override init() {
-        titleCode = ""
-        titleName = ""
+        name = ""
         super.init()
     }
 
     override class func primaryKey() -> String {
-        return "titleCode"
+        return "name"
     }
 
     override class func requiredProperties() -> [String] {
-        return ["titleCode", "titleName", "updateDate", "episodes"]
-    }
-}
-
-// Episode Information
-class EpisodeInfoRLM: RLMObject {
-    dynamic var episodeCode: String
-    dynamic var episodeName: String
-
-    dynamic var titleInfo: RLMLinkingObjects! // Link back to TitleInfoRLM
-
-    init(episodeCode: String, episodeName: String) {
-        self.episodeCode = episodeCode
-        self.episodeName = episodeName
-
-        super.init()
-    }
-
-    @available(*, unavailable, message="This init is only used by Realm for temporary objects")
-    private override init() {
-        episodeCode = ""
-        episodeName = ""
-        super.init()
-    }
-
-    override class func linkingObjectsProperties() -> [String : RLMPropertyDescriptor] {
-        let prop = RLMPropertyDescriptor(withClass: TitleInfoRLM.self, propertyName: "episodes")
-        return ["titleInfo" : prop]
-    }
-
-    override class func requiredProperties() -> [String] {
-        return ["episodeCode", "episodeName"]
-    }
-
-    override class func primaryKey() -> String {
-        return "episodeCode"
+        return ["name"]
     }
 }
 
 class CombinedInfo {
-    let titleCode: String
     let titleName: String
-    let episodeCode: String
-    let episodeName: String
 
-    init(episode: EpisodeInfoRLM) {
-        self.titleCode = (episode.titleInfo[0] as! TitleInfoRLM).titleCode
-        self.titleName = (episode.titleInfo[0] as! TitleInfoRLM).titleName
-        self.episodeCode = episode.episodeCode
-        self.episodeName = episode.episodeCode
+    init(title: TitleInfoRLM) {
+        self.titleName = title.name
     }
 }
 
@@ -93,12 +48,10 @@ class DB {
     }
 
     private init() {
-        let episode = EpisodeInfoRLM(episodeCode: "E1", episodeName: "Episode 1")
-        let title = TitleInfoRLM(titleCode: "T1", titleName: "Great burgers of the world")
-        title.episodes.addObject(episode)
+        let title = TitleInfoRLM(name: "Great burgers of the world")
 
         let config = RLMRealmConfiguration.defaultConfiguration()
-        config.inMemoryIdentifier = "SampleDB"
+        config.inMemoryIdentifier = "KeepItInMem"
         RLMRealmConfiguration.setDefaultConfiguration(config)
 
         let realm = RLMRealm.defaultRealm()
@@ -112,9 +65,9 @@ class DB {
     }
 
     internal var allItems: [CombinedInfo]? {
-        let items: [CombinedInfo] = EpisodeInfoRLM.allObjects().flatMap({
-            if let e = $0 as? EpisodeInfoRLM {
-                return CombinedInfo(episode: e)
+        let items: [CombinedInfo] = TitleInfoRLM.allObjects().flatMap({
+            if let t = $0 as? TitleInfoRLM {
+                return CombinedInfo(title: t)
             } else {
                 return nil
             }
