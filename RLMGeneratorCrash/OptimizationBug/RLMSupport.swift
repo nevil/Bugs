@@ -16,11 +16,71 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+final public class MyFastGenerator : GeneratorType {
+    var enumerable: NSFastEnumeration
+    var state: [NSFastEnumerationState]
+    var n: Int
+    var count: Int
+
+    /// Size of ObjectsBuffer, in ids.
+    var STACK_BUF_SIZE: Int { return 4 }
+
+    /// Must have enough space for STACK_BUF_SIZE object references.
+    struct ObjectsBuffer {
+        var buf = (COpaquePointer(), COpaquePointer(),
+                   COpaquePointer(), COpaquePointer())
+    }
+    var objects: [ObjectsBuffer]
+
+    @inline(never)
+    public func next() -> AnyObject? {
+        print("MyFastGenerator next")
+        if n == count {
+            // FIXME: Is this check necessary before refresh()?
+            if count == 0 { return .None }
+            refresh()
+            if count == 0 { return .None }
+        }
+        let next : AnyObject = state[0].itemsPtr[n]!
+        n += 1
+        return next
+    }
+
+    @inline(never)
+    func refresh() {
+        print("MyFastGenerator refresh")
+        n = 0
+        count = enumerable.countByEnumeratingWithState(
+            state._baseAddressIfContiguous,
+            objects: AutoreleasingUnsafeMutablePointer(
+                objects._baseAddressIfContiguous),
+            count: STACK_BUF_SIZE)
+    }
+
+    @inline(never)
+    public init(_ enumerable: NSFastEnumeration) {
+        print("MyFastGenerator init")
+        self.enumerable = enumerable
+        self.state = [ NSFastEnumerationState(
+            state: 0, itemsPtr: nil,
+            mutationsPtr: _fastEnumerationStorageMutationsPtr,
+            extra: (0, 0, 0, 0, 0)) ]
+        self.objects = [ ObjectsBuffer() ]
+        self.n = -1
+        self.count = -1
+    }
+
+    deinit {
+        print("MyFastGenerator deinit")
+    }
+}
+
+
 public final class RLMGenerator: GeneratorType {
-    private let generatorBase: NSFastGenerator
+    private let generatorBase: MyFastGenerator
 
     internal init(collection: RLMCollection) {
-        generatorBase = NSFastGenerator(collection)
+        generatorBase = MyFastGenerator(collection)
     }
 
 // Enable this property to fix the optimization issue
