@@ -14,8 +14,8 @@ class TitleInfoRLM: RLMObject {
         super.init()
     }
 
-    @available(*, unavailable, message="This init is only used by Realm for temporary objects")
-    private override init() {
+    @available(*, unavailable, message: "This init is only used by Realm for temporary objects")
+    fileprivate override init() {
         name = ""
         super.init()
     }
@@ -47,17 +47,17 @@ class DB {
         return Static.instance
     }
 
-    private init() {
+    fileprivate init() {
         let title = TitleInfoRLM(name: "Great burgers of the world")
 
-        let config = RLMRealmConfiguration.defaultConfiguration()
+        let config = RLMRealmConfiguration.default()
         config.inMemoryIdentifier = "KeepItInMem"
-        RLMRealmConfiguration.setDefaultConfiguration(config)
+        RLMRealmConfiguration.setDefault(config)
 
-        let realm = RLMRealm.defaultRealm()
+        let realm = RLMRealm.default()
         do {
-            try realm.transactionWithBlock {
-                realm.addOrUpdateObject(title)
+            try realm.transaction {
+                realm.addOrUpdate(title)
             }
         } catch {
             print("Error \(error)")

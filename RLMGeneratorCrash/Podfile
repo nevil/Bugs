@@ -2,6 +2,6 @@
 # platform :ios, '8.0'
 
 target 'OptimizationBug' do
-pod 'Realm', '= 1.0.2'
+pod 'Realm', '= 2.1.1'
 end
 

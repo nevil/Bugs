@@ -96,12 +96,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8EDDA2EC1D0F9D0000948D62 /* Build configuration list for PBXNativeTarget "OptimizationBug" */;
 			buildPhases = (
-				0886470182B9A5BE26D9670E /* Check Pods Manifest.lock */,
+				0886470182B9A5BE26D9670E /* [CP] Check Pods Manifest.lock */,
 				8EDDA2D61D0F9D0000948D62 /* Sources */,
 				8EDDA2D71D0F9D0000948D62 /* Frameworks */,
 				8EDDA2D81D0F9D0000948D62 /* Resources */,
-				FB16AC07A2AF06B0D1CABA32 /* Embed Pods Frameworks */,
-				8F2DC023B144778C85BBE8FA /* Copy Pods Resources */,
+				FB16AC07A2AF06B0D1CABA32 /* [CP] Embed Pods Frameworks */,
+				8F2DC023B144778C85BBE8FA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -124,6 +124,7 @@
 				TargetAttributes = {
 					8EDDA2D91D0F9D0000948D62 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -156,29 +157,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0886470182B9A5BE26D9670E /* Check Pods Manifest.lock */ = {
+		0886470182B9A5BE26D9670E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8F2DC023B144778C85BBE8FA /* Copy Pods Resources */ = {
+		8F2DC023B144778C85BBE8FA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,14 +187,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OptimizationBug/Pods-OptimizationBug-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FB16AC07A2AF06B0D1CABA32 /* Embed Pods Frameworks */ = {
+		FB16AC07A2AF06B0D1CABA32 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,6 +316,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.hasselqvist.OptimizationBug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -327,6 +329,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.hasselqvist.OptimizationBug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
